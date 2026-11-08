@@ -91,3 +91,19 @@ The user answered “已完成 Vercel 登录” and “允许新站复用原表�
 2. `5014f3d` — faithful React migration, dynamic routes and server-validated Contact implementation.
 3. `e7e1651` — actual mobile navigation/scroll integration fixes, content tests, HTTP checks, evidence and assignment documentation.
 4. `docs: record production deployment and assignment evidence` — live URLs, post-deployment checks, final public screenshots and submission materials.
+
+## 2026-11-07 — Part 1 requirements review
+
+**New user prompt:** Review the existing assignment, ensure `/`, `/about-me`, `/projects` and `/contact-me-server-form` exist, retain dynamic projects, save form submissions as private JSON that works on Vercel, prepare a separate concise English issues-and-fixes file, verify, commit/push and redeploy. Keep the original site unchanged and accurately identify Codex as the AI tool.
+
+**Observed gaps:** Before changes, the two required new URLs returned HTTP 404. The existing Contact handler validated and emailed messages but did not persist JSON. The earlier brief allowed other page names and did not specify JSON persistence; this review applies the newly clarified Part 1 requirements.
+
+**Changes and evidence so far:**
+- Added real required routes using shared existing biography/form components and linked them in navigation. Kept all eight dynamic project routes and compatibility pages.
+- Created a private Vercel Blob store connected only to `portfolio-nextjs`. Added server-only JSON writes with separate UUID records, no public read/list API and no temporary-file fallback.
+- Changed the request flow to validate, persist, then notify. Storage failure cannot produce success; notification failure preserves the saved record and displays a truthful saved status.
+- Twelve automated tests, strict type checking and the production build passed. All 75 expanded local HTTP checks passed.
+- A real synthetic submission was read back as JSON with owner credentials. Anonymous Blob access returned 403; public copies were absent. Email notification also succeeded.
+- The first responsive sweep found that the added navigation item overlapped the logo at 640px. Added compact navigation spacing/type only for 601-900px, then rebuilt for retesting.
+- Located the user-moved prompt history at `Desktop/isba2438/assignment 2/AI_Prompt_History_English.md`. Preserved it and created `AI_Issues_and_Fixes_English.md` beside it, with matching copies in `docs/` and links to actual historical commits and verification evidence.
+- Rechecked 36 page/viewport combinations after the tablet navigation correction; all passed. Mobile navigation to About Me, saved Chinese/dark preferences, translated resume links and real server field errors also passed.

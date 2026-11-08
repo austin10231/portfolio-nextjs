@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { randomUUID } from "node:crypto";
 
 export const contactSchema = z.object({
   name: z.string().trim().min(2, "name_length").max(80, "name_length"),
@@ -7,7 +8,17 @@ export const contactSchema = z.object({
   website: z.string().max(0, "invalid_submission").optional(),
 });
 export type ContactInput = z.infer<typeof contactSchema>;
-type Fetch = typeof fetch;
+export type ContactSubmission = Omit<ContactInput, "website"> & {
+  schemaVersion: 1;
+  id: string;
+  createdAt: string;
+};
+export type SaveSubmission = (submission: ContactSubmission) => Promise<void>;
+type ContactServices = {
+  saveSubmission?: SaveSubmission;
+  endpoint?: string;
+  fetcher?: typeof fetch;
+};
 const MAX_BODY_BYTES = 24_000;
 
 async function readBody(request: Request): Promise<string> {
@@ -31,7 +42,7 @@ async function readBody(request: Request): Promise<string> {
 }
 
 /** Exported so tests exercise the same request path used by the deployed Route Handler. */
-export async function processContactRequest(request: Request, endpoint = "", fetcher: Fetch = fetch): Promise<Response> {
+export async function processContactRequest(request: Request, { saveSubmission, endpoint = "", fetcher = fetch }: ContactServices = {}): Promise<Response> {
   const json = (body: object, status: number) => Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
   if (request.method !== "POST") return json({ ok: false, error: "method_not_allowed" }, 405);
   const origin = request.headers.get("origin");
@@ -49,17 +60,24 @@ export async function processContactRequest(request: Request, endpoint = "", fet
     }
     return json({ ok: false, error: "validation_failed", errors }, 400);
   }
-  // Credentials/configuration are server-only. The original website's endpoint is not embedded.
-  if (!/^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(endpoint)) return json({ ok: false, error: "service_unavailable" }, 503);
+  // Persistence is mandatory. Never report success or send email before the JSON is saved.
+  if (!saveSubmission) return json({ ok: false, error: "storage_unavailable" }, 503);
+  const { name, email, message } = parsed.data;
+  const submission: ContactSubmission = { schemaVersion: 1, id: randomUUID(), createdAt: new Date().toISOString(), name, email, message };
+  try { await saveSubmission(submission); }
+  catch { return json({ ok: false, error: "storage_unavailable" }, 503); }
+
+  // Email remains a notification channel. A notification failure must not lose a saved message.
+  const saved = () => json({ ok: true, message: "saved", submissionId: submission.id }, 200);
+  if (!/^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(endpoint)) return saved();
   try {
-    const { name, email, message } = parsed.data;
     const response = await fetcher(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({ name, email, message, _subject: "New portfolio-nextjs contact message" }),
       signal: AbortSignal.timeout(10_000),
     });
-    if (!response.ok) return json({ ok: false, error: "delivery_failed" }, 502);
-    return json({ ok: true, message: "sent" }, 200);
-  } catch { return json({ ok: false, error: "delivery_failed" }, 502); }
+    if (!response.ok) return saved();
+    return json({ ok: true, message: "sent", submissionId: submission.id }, 200);
+  } catch { return saved(); }
 }

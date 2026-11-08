@@ -133,7 +133,8 @@
     "exp2_stack_2": "Prompt Engineering",
     "exp2_stack_3": "Agent Evaluation",
     "exp2_stack_4": "EHR-Structured Datasets",
-    "exp2_stack_5": "Reasoning Benchmarking"
+    "exp2_stack_5": "Reasoning Benchmarking",
+    "nav_about_me": "ABOUT ME"
   },
   "zh": {
     "nav_projects": "项目",
@@ -269,6 +270,7 @@
     "exp2_stack_2": "Prompt Engineering",
     "exp2_stack_3": "Agent Evaluation",
     "exp2_stack_4": "EHR 结构化数据集",
-    "exp2_stack_5": "推理基准评测"
+    "exp2_stack_5": "推理基准评测",
+    "nav_about_me": "关于我"
   }
 }

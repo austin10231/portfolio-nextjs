@@ -10,7 +10,8 @@ const feedback = {
     message_length: "Please enter a message between 10 and 5,000 characters.",
     service_unavailable: "The contact service is currently unavailable. Please email me directly using the address below.",
     delivery_failed: "Your message could not be sent. Please try again or email me directly.",
-    sending: "Sending…", sent: "Thank you! Your message has been sent.",
+    storage_unavailable: "Your message could not be saved. Please try again or email me directly.",
+    sending: "Sending…", sent: "Thank you! Your message has been sent.", saved: "Thank you! Your message has been saved.",
   },
   zh: {
     name_length: "请输入 2–80 个字符的姓名。",
@@ -18,7 +19,8 @@ const feedback = {
     message_length: "请输入 10–5,000 个字符的留言。",
     service_unavailable: "联系服务暂时不可用，请通过下方邮箱直接联系我。",
     delivery_failed: "留言发送失败，请重试或通过邮箱直接联系我。",
-    sending: "发送中…", sent: "谢谢！你的留言已发送。",
+    storage_unavailable: "留言未能保存，请重试或通过邮箱直接联系我。",
+    sending: "发送中…", sent: "谢谢！你的留言已发送。", saved: "谢谢！你的留言已保存。",
   },
 };
 export function ContactForm() {
@@ -39,7 +41,7 @@ export function ContactForm() {
     try {
       const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(data)) });
       const result = await response.json();
-      if (response.ok && result.ok === true) { setStatus("sent"); form.current?.reset(); }
+      if (response.ok && result.ok === true) { setStatus(result.message === "saved" ? "saved" : "sent"); form.current?.reset(); }
       else { setErrors(result.errors ?? {}); setStatus(result.error === "validation_failed" ? "" : result.error ?? "delivery_failed"); }
     } catch { setStatus("delivery_failed"); }
     finally { setPending(false); }
@@ -54,6 +56,6 @@ export function ContactForm() {
     </div>)}
     <div className="form-trap" aria-hidden="true"><label htmlFor="website">Leave this field empty</label><input type="text" name="website" id="website" tabIndex={-1} autoComplete="off" /></div>
     <button type="submit" className="btn btn--outline" disabled={pending}>{pending ? copy.sending : <Text id="contact_button_send" />}</button>
-    <div aria-live="polite" aria-atomic="true">{status && <p className={`form-status form-status--${status === "sent" ? "success" : "error"}`} role={status === "sent" ? "status" : "alert"}>{message(status)}</p>}</div>
+    <div aria-live="polite" aria-atomic="true">{status && <p className={`form-status form-status--${["sent", "saved"].includes(status) ? "success" : "error"}`} role={["sent", "saved"].includes(status) ? "status" : "alert"}>{message(status)}</p>}</div>
   </form>;
 }

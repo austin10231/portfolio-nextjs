@@ -9,12 +9,16 @@ const inventory = await data("../docs/source-inventory.json");
 let passed = 0;
 const check = (condition, label) => { assert.ok(condition, label); passed++; console.log(`PASS ${label}`); };
 
-for (const path of ["/", "/experience", "/projects", "/contact", "/ui-design"]) {
+for (const path of ["/", "/about-me", "/projects", "/contact-me-server-form", "/experience", "/contact", "/ui-design"]) {
   const response = await fetch(new URL(path, base));
   check(response.status === 200, `${path} HTTP 200`);
   const html = await response.text();
   check(html.includes("<title>") && html.includes("<main") || path === "/ui-design" && html.includes("ui-grid"), `${path} page content`);
   if (path === "/projects") for (const project of projects) check(html.includes(`/projects/${project.slug}`), `project link ${project.slug}`);
+  if (["/", "/about-me", "/projects", "/contact-me-server-form"].includes(path)) check(!response.redirected, `${path} is a real page`);
+  if (path === "/") check(html.includes('href="/about-me"') && html.includes('href="/contact-me-server-form"'), "required routes linked from navigation");
+  if (path === "/about-me") check(html.includes("Santa Clara University") && html.includes("University of Glasgow"), "About Me preserves original biography");
+  if (path === "/contact-me-server-form") check(["name", "email", "message"].every(field => html.includes(`name="${field}"`)), "server contact page has all three form fields");
 }
 for (const project of projects) {
   const response = await fetch(new URL(`/projects/${project.slug}`, base));
@@ -39,4 +43,5 @@ check(Object.keys((await invalid.json()).errors).length === 3, "server returns t
 check((await post("{")).status === 400, "server rejects malformed JSON");
 check((await post(JSON.stringify({ message: "a".repeat(25_000) }))).status === 413, "server rejects oversized body");
 check((await fetch(new URL("/api/contact", base))).status === 405, "contact endpoint rejects GET");
+for (const path of ["/submissions.json", "/data/submissions.json", "/contact-submissions", "/api/submissions"]) check((await fetch(new URL(path, base))).status === 404, `no public submission endpoint ${path}`);
 console.log(`\n${passed} HTTP checks passed against ${base.origin}. No valid messages were sent.`);

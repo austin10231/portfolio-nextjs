@@ -9,9 +9,11 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.ts",
-    "check:http": "node scripts/check-http.mjs"
+    "check:http": "node scripts/check-http.mjs",
+    "check:storage": "node --env-file-if-exists=.env.local scripts/check-storage.mjs"
   },
   "dependencies": {
+    "@vercel/blob": "2.8.2",
     "next": "16.4.5",
     "react": "19.3.1",
     "react-dom": "19.3.1",
@@ -23,5 +25,10 @@
     "@types/react-dom": "^19.0.0",
     "typescript": "^5.9.0"
   },
-  "engines": { "node": "24.x" }
+  "engines": {
+    "node": "24.x"
+  },
+  "overrides": {
+    "@vercel/cli-config": { "zod": "$zod" }
+  }
 }
