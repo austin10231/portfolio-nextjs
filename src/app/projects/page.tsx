@@ -12,6 +12,7 @@ export default function ProjectsPage() {
     <section className="section"><Link className="feature-strip" href="/experience"><Text id="projects_page_strip" /></Link></section>
     <section id="projects" className="section projects"><h2 className="section__title"><Text id="projects_archive_title" /></h2>
       <div className="projects__grid">{projects.map(project => <ProjectCard project={project} key={project.slug} />)}</div>
+      <p className="gallery-link"><Link className="link" href="/ui-design">Smart Parking App – UI Design →</Link></p>
     </section>
   </SiteShell>;
 }

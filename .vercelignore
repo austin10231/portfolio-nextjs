@@ -1,0 +1,6 @@
+.git/
+.reference/
+.env*
+!.env.example
+test-results/
+*.tsbuildinfo

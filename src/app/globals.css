@@ -1495,6 +1495,8 @@ main {
 /* Next.js additions: the original page styling above is retained. */
 .project__detail-link:hover,
 .project__detail-link:focus-visible { color: var(--clr-primary); }
+.header { z-index: 10; }
+.gallery-link { margin-top: 2rem; text-align: center; }
 .project-detail__back { display: inline-block; margin-bottom: 1.5rem; }
 .project-detail__title { font-size: clamp(1.85rem, 4.35vw, 3.15rem); overflow-wrap: anywhere; }
 .project-detail__resources { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; margin-top: 2rem; }

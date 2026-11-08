@@ -1,0 +1,36 @@
+# Verification report
+
+Date: 2026-11-07 (America/Los_Angeles). Scope: the assignment requirements supplied by the user.
+
+## Local checks
+
+| Check | Result |
+| --- | --- |
+| TypeScript strict check | Passed |
+| Node.js 24.22.2 test run | 8 tests passed |
+| Next.js 16.4.5 production build on Node 24 | Passed; eight generated project routes and dynamic Contact API |
+| HTTP integration against development server | 60 checks passed |
+| HTTP integration against production server | 60 checks passed |
+| Original images/PDFs | All 14 exact Git blob hashes match |
+| Projects / skills / translations | 8 projects, 24 skills, 134 keys in each language |
+| Responsive DOM checks | 24 combinations: six pages × 320/390/768/1280px; no horizontal document overflow |
+| Theme/language | English/light and Chinese/dark inspected; preferences survive reload; correct resume file selected |
+| Navigation | Main routes, mobile menu, dynamic detail click and refresh verified |
+| Experience panels | Click and ArrowLeft switching, single visible panel and matching hash verified |
+| Server form feedback | Whitespace-only name/message rejected with visible English and Chinese field errors |
+| Actual delivery | Authorized local QA submission returned HTTP 200 `{"ok":true,"message":"sent"}` after Formspree acceptance |
+
+The original `my-profile` main commit was read again after implementation and remains `3ef6c8264a0efb6a8e42f752a34b3e2e4caf56db`. No write commands or remotes target that repository.
+
+## Browser evidence
+
+- `screenshots/home-desktop.jpg`
+- `screenshots/home-mobile.jpg`
+- `screenshots/mobile-menu-fixed.jpg`
+- `screenshots/contact-server-validation.jpg`
+
+Responsive QA used browser viewport sizes rather than physical devices. Reduced-motion/coarse-pointer behavior was reviewed in the CSS and effect guards; OS accessibility preferences were not changed. Third-party project links retain their original destinations; their future availability is outside this deployment's control. Delivery acceptance was tested; the Outlook inbox was not independently inspected.
+
+## Deployment verification
+
+Pending deployment. This section will be updated with actual URLs and post-deployment checks, never an assumed success.

@@ -34,7 +34,28 @@ Dates use America/Los_Angeles. Entries describe actual work, not hypothetical er
 
 - **Observed in draft code review:** The imported original `body` rule used the literal `"Poppins"`, while the Next.js layout registered the font through `next/font`'s `--font-poppins` variable. Merely importing the original CSS would therefore fall back to a different font.
 - **Correction:** Connected the original font stack to `var(--font-poppins)` while retaining the fallback. This keeps the original weights and serves optimized font files from the new deployment.
-- **Retest:** Production build passed; computed browser font and visual comparison are pending below.
+- **Retest:** Production build passed. Browser computed font is `Poppins, "Poppins Fallback", Poppins, sans-serif`; desktop 1280×720 and mobile 390×844 comparisons match the original typography and layout.
+
+### 2. Mobile menu was painted behind the main page
+
+- **Reproduction:** At 390×844, expand the hamburger menu and click EXPERIENCE. The navigation timed out without changing the URL. The screenshot showed the page heading/avatar covering menu items.
+- **Cause:** The first migration retained the original equal `z-index: 1` on header and main. The menu's own z-index could not escape the header's stacking context.
+- **Correction:** Raised the shared `.header` stacking level to 10; retained the same menu layout and animation. Closed menus are also hidden from keyboard/accessibility navigation.
+- **Retest:** The menu overlays the page correctly; clicking EXPERIENCE reaches `/experience`, closes the menu and displays both experience tabs. No horizontal overflow at 390px. Research click changes the URL to `#research`; ArrowLeft returns to `#industry` with only the intended panel visible.
+
+### 3. Original smooth-scrolling CSS needed a Next.js 16 adaptation
+
+- **Observed:** Browser console emitted `Detected scroll-behavior: smooth ... add data-scroll-behavior="smooth"` during client navigation. The first migration copied the CSS without the matching Next.js root attribute.
+- **Correction:** Read the installed Next.js 16 upgrade guide and added `data-scroll-behavior="smooth"` to the root HTML element. This preserves smooth in-page anchors while allowing route navigation to reset scrolling correctly.
+- **Retest:** Browser reload/navigation and console review are included in the final verification report.
+
+### Browser verification completed so far
+
+- English/light desktop homepage: original layout and fonts; all three home images loaded; no horizontal overflow.
+- Chinese/dark homepage: all visible text translates, correct Chinese resume URL, preferences survive reload.
+- Client navigation and dynamic project detail: correct localized content, detail refresh works, only one stardust layer remains after navigation.
+- Contact: whitespace-only name/message pass browser length checks but receive real server field errors, displayed in Chinese with accessible field associations. No message was sent by this validation test.
+- Preserved the original UI gallery and added a small link below the project archive so it is discoverable without changing the eight original cards.
 
 ### Additional environment findings (not fabricated AI implementation errors)
 
@@ -42,3 +63,13 @@ Dates use America/Los_Angeles. Entries describe actual work, not hypothetical er
 - The initial test command emitted a Node module-type warning. Declared the project's actual ESM format with `"type": "module"`.
 - Host Node is 26, while production targets Node 24. Installed a temporary Node 24 runner for matching-runtime verification; the initial host-runtime build already passed.
 - Vercel CLI was logged out, and the browser required account login. A real device-auth URL was provided to the user while local development continued. Independent Contact delivery configuration is also pending; missing configuration returns 503 instead of a false sent message.
+
+## 2026-11-07 — Deployment authentication and delivery authorization
+
+The user answered “已完成 Vercel 登录” and “允许新站复用原表单收件地址”. The new project will therefore keep its own server environment variable pointing to the existing public Formspree delivery endpoint. This does not change the original site's code, form configuration, domain or deployment. Real delivery verification can now proceed.
+
+- The first CLI device-auth process had already ended before authorization persisted. A fresh code was issued; the user completed it and the CLI explicitly returned “Congratulations! You are now signed in.” No password or account token was added to the repository.
+- An authorized local QA message sent through the new server Route Handler was accepted by Formspree; the endpoint returned HTTP 200 with `ok: true`. This proves the delivery path is active, not merely a simulated success.
+- Matching-runtime verification completed on Node 24.22.2: 8 tests passed, production build passed, and all 60 HTTP checks passed against the production server.
+- Browser responsive checks completed for six pages at 320, 390, 768 and 1280px: 24 combinations with no horizontal document overflow.
+- Saved real browser screenshots for the desktop/mobile homepages, fixed mobile menu and server validation feedback. Corrected the first desktop screenshot, which had been captured during the preserved page-entry fade, by recapturing after the animation finished.

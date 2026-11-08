@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en" suppressHydrationWarning><head>
+  return <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning><head>
     <link rel="stylesheet" href="/vendor/fontawesome/css/all.min.css" />
   </head><body className={`light ${poppins.variable}`} id="top" suppressHydrationWarning>
     <PreferencesProvider>{children}<Effects /></PreferencesProvider>
