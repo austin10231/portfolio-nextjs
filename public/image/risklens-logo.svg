@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">RiskLens AI Logo</title>
+  <desc id="desc">Shield mark with trend line for risk analytics.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2978b5" />
+      <stop offset="100%" stop-color="#5aa8dc" />
+    </linearGradient>
+  </defs>
+
+  <rect x="8" y="8" width="112" height="112" rx="24" fill="url(#bg)" />
+
+  <path
+    d="M64 24 L90 34 V59 C90 77 78 92 64 100 C50 92 38 77 38 59 V34 Z"
+    fill="#ffffff"
+    fill-opacity="0.94"
+  />
+
+  <path
+    d="M46 71 L56 61 L64 66 L74 53 L82 58"
+    fill="none"
+    stroke="#2978b5"
+    stroke-width="5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <circle cx="46" cy="71" r="3" fill="#2978b5" />
+  <circle cx="56" cy="61" r="3" fill="#2978b5" />
+  <circle cx="64" cy="66" r="3" fill="#2978b5" />
+  <circle cx="74" cy="53" r="3" fill="#2978b5" />
+  <circle cx="82" cy="58" r="3" fill="#2978b5" />
+</svg>

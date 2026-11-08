@@ -1,0 +1,142 @@
+[
+  {
+    "slug": "rl-maze-navigation",
+    "translationPrefix": "proj9",
+    "stack": [
+      "Python",
+      "MuJoCo",
+      "Gymnasium",
+      "PPO",
+      "Curriculum Learning"
+    ],
+    "links": [
+      {
+        "href": "https://github.com/austin10231/rl-maze-navigation.git",
+        "label": "source code"
+      }
+    ]
+  },
+  {
+    "slug": "multimodal-image-search",
+    "translationPrefix": "proj7",
+    "stack": [
+      "Python",
+      "PyTorch",
+      "CLIP",
+      "FAISS",
+      "Streamlit"
+    ],
+    "links": [
+      {
+        "href": "https://multimodal-image-search-engine-ti5vdha6fpjbnbvxmzfifw.streamlit.app/",
+        "label": "live demo"
+      },
+      {
+        "href": "https://github.com/austin10231/multimodal-image-search-engine.git",
+        "label": "source code"
+      }
+    ]
+  },
+  {
+    "slug": "instacart-reorder-prediction",
+    "translationPrefix": "proj2",
+    "stack": [
+      "Python",
+      "Pandas / Scikit-learn",
+      "ETL Pipeline",
+      "ML Engineering"
+    ],
+    "links": [
+      {
+        "href": "https://github.com/austin10231/Instacart-end-to-end-ML-system.git",
+        "label": "source code"
+      }
+    ]
+  },
+  {
+    "slug": "jenkins-as-a-service",
+    "translationPrefix": "proj8",
+    "stack": [
+      "Jenkins",
+      "VMware",
+      "RBAC & Audit Logs",
+      "JFrog",
+      "CI/CD Governance"
+    ],
+    "links": [
+      {
+        "href": "/Jenkins%20as%20a%20Service%20(JaaS).pdf",
+        "label": "project document"
+      },
+      {
+        "href": "https://github.com/austin10231/Jenkins-as-a-Service-OSS-Platform.git",
+        "label": "source code"
+      }
+    ]
+  },
+  {
+    "slug": "bank-marketing-predictor",
+    "translationPrefix": "proj3",
+    "stack": [
+      "Python",
+      "XGBoost",
+      "SHAP",
+      "SMOTE",
+      "Scikit-learn"
+    ],
+    "links": [
+      {
+        "href": "https://github.com/austin10231/Bank_Marketing_ML_Project.git",
+        "label": "source code"
+      }
+    ]
+  },
+  {
+    "slug": "stock-data-pipeline",
+    "translationPrefix": "proj4",
+    "stack": [
+      "AWS (EC2, S3, Glue, Athena)",
+      "Apache Kafka",
+      "Python",
+      "Streaming Architecture"
+    ],
+    "links": [
+      {
+        "href": "https://github.com/austin10231/kafka-streaming-data-lake.git",
+        "label": "source code"
+      }
+    ]
+  },
+  {
+    "slug": "spotify-podcast-analysis",
+    "translationPrefix": "proj5",
+    "stack": [
+      "Python",
+      "Pandas / NumPy",
+      "Scikit-learn",
+      "Seaborn / Matplotlib"
+    ],
+    "links": [
+      {
+        "href": "https://github.com/austin10231/Data-Analysis-With-Python-Project.git",
+        "label": "source code"
+      }
+    ]
+  },
+  {
+    "slug": "flight-delay-prediction",
+    "translationPrefix": "proj6",
+    "stack": [
+      "Python",
+      "CatBoost",
+      "ML Pipeline",
+      "Streamlit"
+    ],
+    "links": [
+      {
+        "href": "https://github.com/austin10231/Flight-Delay-Demo.git",
+        "label": "source code"
+      }
+    ]
+  }
+]

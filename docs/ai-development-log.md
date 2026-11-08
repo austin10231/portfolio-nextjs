@@ -19,6 +19,26 @@ Dates use America/Los_Angeles. Entries describe actual work, not hypothetical er
 - Queried the npm registry rather than assuming package versions: Next.js 16.4.5, React 19.3.1 and Zod 4.6.7.
 - Created the independent package/configuration, README and this log before implementation.
 
+## 2026-11-07 — Faithful React migration
+
+- Migrated the original CSS and extracted the final 134 English and 134 Chinese translation values, eight project records and 24 skills.
+- Copied all 14 image/document assets from pinned original commit `3ef6c82`; verified every asset against its original Git blob SHA-1. Copied Font Awesome 6.5.1 fonts/styles locally to preserve the original icon shapes.
+- Added four main routes, eight generated project-detail routes, the UI gallery, legacy `.html` redirects, theme/language persistence, both resume variants and experience hash navigation.
+- Reimplemented reveal, page entry, tilt, magnetic and stardust effects with route-owned cleanup and reduced-motion/touch behavior.
+- Implemented the real request handler and six tests covering server validation, trimming, delivery boundaries, provider/network failure and malformed/oversized requests.
+- First `typecheck`, all six tests and the first production build passed. Build output shows all eight `[slug]` pages and a dynamic `/api/contact` route.
+
 ## Actual problems and corrections
 
-No implementation issues have been recorded yet. Findings will be added only after they actually occur, with evidence, correction and retest results.
+### 1. CSS font name did not match next/font's generated font family
+
+- **Observed in draft code review:** The imported original `body` rule used the literal `"Poppins"`, while the Next.js layout registered the font through `next/font`'s `--font-poppins` variable. Merely importing the original CSS would therefore fall back to a different font.
+- **Correction:** Connected the original font stack to `var(--font-poppins)` while retaining the fallback. This keeps the original weights and serves optimized font files from the new deployment.
+- **Retest:** Production build passed; computed browser font and visual comparison are pending below.
+
+### Additional environment findings (not fabricated AI implementation errors)
+
+- Python's local CA configuration rejected HTTPS asset retrieval (`CERTIFICATE_VERIFY_FAILED`). Switched to the system `curl` trust store with certificate verification enabled, then verified downloaded asset hashes; no security checks were disabled.
+- The initial test command emitted a Node module-type warning. Declared the project's actual ESM format with `"type": "module"`.
+- Host Node is 26, while production targets Node 24. Installed a temporary Node 24 runner for matching-runtime verification; the initial host-runtime build already passed.
+- Vercel CLI was logged out, and the browser required account login. A real device-auth URL was provided to the user while local development continued. Independent Contact delivery configuration is also pending; missing configuration returns 503 instead of a false sent message.
