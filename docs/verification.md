@@ -28,9 +28,21 @@ The original `my-profile` main commit was read again after implementation and re
 - `screenshots/home-mobile.jpg`
 - `screenshots/mobile-menu-fixed.jpg`
 - `screenshots/contact-server-validation.jpg`
+- `screenshots/project-dynamic-route.jpg`
 
 Responsive QA used browser viewport sizes rather than physical devices. Reduced-motion/coarse-pointer behavior was reviewed in the CSS and effect guards; OS accessibility preferences were not changed. Third-party project links retain their original destinations; their future availability is outside this deployment's control. Delivery acceptance was tested; the Outlook inbox was not independently inspected.
 
 ## Deployment verification
 
-Pending deployment. This section will be updated with actual URLs and post-deployment checks, never an assumed success.
+- Public production URL: https://portfolio-nextjs-mu-black.vercel.app
+- New public repository: https://github.com/austin10231/portfolio-nextjs
+- Vercel project: `portfolio-nextjs`, separate ID `prj_w4PCM7kWlON6PxUtwes3zIduYrc4`.
+- GitHub default branch: `test-new-function`, following the local workspace push instructions. The local development branch tracks it.
+- Vercel is connected only to the new repository. Production/Preview use the new project's server-only `CONTACT_FORM_ENDPOINT` variable.
+- First production deployment reached Vercel `READY` and the public alias returned HTTP 200 without credentials or protection-bypass tokens.
+- All **60 HTTP checks passed against the public production alias**, including eight detail routes, unknown-route 404s, all local assets, legacy redirects and direct server validation.
+- A valid same-origin production POST returned **HTTP 200 with `ok: true`** after provider acceptance. Together with the local test, two clearly labeled QA messages were submitted to the owner-authorized existing channel.
+- The original repository head was read again after deployment and is still `3ef6c8264a0efb6a8e42f752a34b3e2e4caf56db`.
+- The new Vercel project's Node setting was explicitly aligned to 24.x, matching `package.json` and the tested local runtime.
+- Public browser QA verified mobile-menu navigation, a dynamic project detail refresh and visible server-side Contact field errors. No production browser errors/warnings were recorded during these checks; the earlier smooth-scroll warning is resolved.
+- Final screenshots were captured from the public deployment, with the page-entry animation allowed to finish before the homepage capture.

@@ -4,6 +4,10 @@ Independent recreation of [Mutian He's existing portfolio](https://mutianhe.com/
 
 The original `austin10231/my-profile` repository, `mutianhe.com`, DNS and deployment are unchanged. This repository and its Vercel deployment are separate.
 
+**Live website:** https://portfolio-nextjs-mu-black.vercel.app
+
+**New repository:** https://github.com/austin10231/portfolio-nextjs
+
 ## Stack and features
 
 - Next.js 16.4.5 App Router, React 19.3.1, TypeScript and CSS.

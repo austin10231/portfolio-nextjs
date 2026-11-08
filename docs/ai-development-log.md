@@ -47,7 +47,7 @@ Dates use America/Los_Angeles. Entries describe actual work, not hypothetical er
 
 - **Observed:** Browser console emitted `Detected scroll-behavior: smooth ... add data-scroll-behavior="smooth"` during client navigation. The first migration copied the CSS without the matching Next.js root attribute.
 - **Correction:** Read the installed Next.js 16 upgrade guide and added `data-scroll-behavior="smooth"` to the root HTML element. This preserves smooth in-page anchors while allowing route navigation to reset scrolling correctly.
-- **Retest:** Browser reload/navigation and console review are included in the final verification report.
+- **Retest:** Public browser navigation and reload completed with no production browser errors/warnings; the earlier smooth-scroll warning is resolved.
 
 ### Browser verification completed so far
 
@@ -62,7 +62,7 @@ Dates use America/Los_Angeles. Entries describe actual work, not hypothetical er
 - Python's local CA configuration rejected HTTPS asset retrieval (`CERTIFICATE_VERIFY_FAILED`). Switched to the system `curl` trust store with certificate verification enabled, then verified downloaded asset hashes; no security checks were disabled.
 - The initial test command emitted a Node module-type warning. Declared the project's actual ESM format with `"type": "module"`.
 - Host Node is 26, while production targets Node 24. Installed a temporary Node 24 runner for matching-runtime verification; the initial host-runtime build already passed.
-- Vercel CLI was logged out, and the browser required account login. A real device-auth URL was provided to the user while local development continued. Independent Contact delivery configuration is also pending; missing configuration returns 503 instead of a false sent message.
+- At the initial authentication check, Vercel CLI was logged out and the browser required account login. A real device-auth URL was provided while local development continued. Delivery configuration was then pending; missing configuration correctly returned 503 instead of a false sent message. These dependencies were subsequently resolved below.
 
 ## 2026-11-07 — Deployment authentication and delivery authorization
 
@@ -73,3 +73,21 @@ The user answered “已完成 Vercel 登录” and “允许新站复用原表�
 - Matching-runtime verification completed on Node 24.22.2: 8 tests passed, production build passed, and all 60 HTTP checks passed against the production server.
 - Browser responsive checks completed for six pages at 320, 390, 768 and 1280px: 24 combinations with no horizontal document overflow.
 - Saved real browser screenshots for the desktop/mobile homepages, fixed mobile menu and server validation feedback. Corrected the first desktop screenshot, which had been captured during the preserved page-entry fade, by recapturing after the animation finished.
+
+## 2026-11-07 — Independent GitHub and Vercel publication
+
+- Created the new public repository `austin10231/portfolio-nextjs`; only its URL is configured as `origin`.
+- Pushed development commits to `test-new-function`, as required by the local workspace's push instructions, and made that the new repository's default branch.
+- Confirmed the Vercel team contained only an unrelated existing project before creation; created a separate `portfolio-nextjs` project and connected it to the new GitHub repository. No existing project settings were changed.
+- Stored `CONTACT_FORM_ENDPOINT` as a new project Secret for Production and Preview through stdin. `.env.local`, Vercel login/OIDC credentials and `.vercel` state are excluded from Git and source upload.
+- First deployment reached READY at https://portfolio-nextjs-mu-black.vercel.app. The public alias passed all 60 HTTP integration checks without authentication.
+- A same-origin valid POST to the live Contact endpoint returned HTTP 200 with `ok: true` after Formspree acceptance. There were two clearly labeled QA messages in total: one local, one deployed.
+- Read the original repository head again after deployment; it remains `3ef6c8264a0efb6a8e42f752a34b3e2e4caf56db`.
+- Aligned the new project's Vercel Node setting to 24.x to match the package engine and local test runtime.
+
+## Commit milestones
+
+1. `470c164` — independent project foundation and original user brief/log.
+2. `5014f3d` — faithful React migration, dynamic routes and server-validated Contact implementation.
+3. `e7e1651` — actual mobile navigation/scroll integration fixes, content tests, HTTP checks, evidence and assignment documentation.
+4. `docs: record production deployment and assignment evidence` — live URLs, post-deployment checks, final public screenshots and submission materials.

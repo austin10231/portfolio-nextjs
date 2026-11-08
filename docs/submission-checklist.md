@@ -14,8 +14,8 @@
 - [x] 真实 Formspree 接受测试消息，未修改原站配置。
 - [x] 主要 Prompt、实际修复、技术决策及演示清单已记录。
 - [x] 分阶段 Git Commit。
-- [ ] 新 GitHub 仓库链接（发布后填写）。
-- [ ] 独立 Vercel 公开 URL（部署后填写）。
-- [ ] 部署后的动态路由、服务端拒绝和真实提交检查。
+- [x] 新 GitHub 仓库：https://github.com/austin10231/portfolio-nextjs
+- [x] 独立 Vercel 公开 URL：https://portfolio-nextjs-mu-black.vercel.app
+- [x] 部署后的 8 个动态详情页、服务端拒绝和真实提交检查。
 - [ ] 用户录制并检查演示视频。
 - [ ] 按课程入口提交仓库、网站链接和所需材料。
