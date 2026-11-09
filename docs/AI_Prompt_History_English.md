@@ -65,7 +65,7 @@ These examples were recorded during actual draft review and testing.
 
 **Student:** Mutian He
 
-**AI assistant for Part 2:** Viber (viber-1 model). Part 1 was built with OpenAI Codex, as recorded above.
+**AI assistant for Part 2:** Viber (viber-1 model), the same assistant credited above.
 
 ## Part 2 Goal
 
