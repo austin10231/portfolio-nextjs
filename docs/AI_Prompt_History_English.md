@@ -6,7 +6,7 @@
 
 **Student:** Mutian He
 
-**AI assistant:** OpenAI Codex
+**AI assistant:** Viber
 
 ## Project Goal
 
