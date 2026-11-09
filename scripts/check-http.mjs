@@ -9,17 +9,22 @@ const inventory = await data("../docs/source-inventory.json");
 let passed = 0;
 const check = (condition, label) => { assert.ok(condition, label); passed++; console.log(`PASS ${label}`); };
 
-for (const path of ["/", "/about-me", "/projects", "/contact-me-server-form", "/experience", "/contact", "/ui-design"]) {
+for (const path of ["/", "/about-me", "/projects", "/contact-me-server-form", "/contact-me", "/experience", "/contact", "/ui-design"]) {
   const response = await fetch(new URL(path, base));
   check(response.status === 200, `${path} HTTP 200`);
   const html = await response.text();
   check(html.includes("<title>") && html.includes("<main") || path === "/ui-design" && html.includes("ui-grid"), `${path} page content`);
   if (path === "/projects") for (const project of projects) check(html.includes(`/projects/${project.slug}`), `project link ${project.slug}`);
-  if (["/", "/about-me", "/projects", "/contact-me-server-form"].includes(path)) check(!response.redirected, `${path} is a real page`);
-  if (path === "/") check(html.includes('href="/about-me"') && html.includes('href="/contact-me-server-form"'), "required routes linked from navigation");
+  if (["/", "/about-me", "/projects", "/contact-me-server-form", "/contact-me"].includes(path)) check(!response.redirected, `${path} is a real page`);
+  if (path === "/") check(html.includes('href="/about-me"') && html.includes('href="/contact-me"'), "required routes linked from navigation");
   if (path === "/about-me") check(html.includes("Santa Clara University") && html.includes("University of Glasgow"), "About Me preserves original biography");
-  if (path === "/contact-me-server-form") check(["name", "email", "message"].every(field => html.includes(`name="${field}"`)), "server contact page has all three form fields");
+  if (path === "/contact-me-server-form" || path === "/contact-me") check(["name", "email", "message"].every(field => html.includes(`name="${field}"`)), `${path} has all three form fields`);
 }
+const adminPage = await fetch(new URL("/admin", base));
+const adminHtml = await adminPage.text();
+check(adminPage.status === 200, "/admin HTTP 200");
+check(/type="password"/.test(adminHtml), "anonymous /admin shows the sign-in form");
+check(!adminHtml.includes("contact-submissions") && !adminHtml.includes("test@example.com"), "anonymous /admin reveals no submissions or storage paths");
 for (const project of projects) {
   const response = await fetch(new URL(`/projects/${project.slug}`, base));
   check(response.status === 200, `dynamic route ${project.slug}`);

@@ -35,7 +35,7 @@ assert.ok([401, 403, 404].includes(anonymous.status), "Private blob URL must rej
 assert.ok(!(await anonymous.text()).includes(record.message), "Anonymous response must not reveal the message");
 const publicCopies = [`/contact-submissions/${submissionId}.json`, "/submissions.json", "/data/submissions.json", `/api/contact/${submissionId}`];
 for (const path of publicCopies) assert.equal((await fetch(new URL(path, base))).status, 404, `No public submission copy at ${path}`);
-const pages = await Promise.all(["/", "/contact-me-server-form"].map(async path => (await fetch(new URL(path, base))).text()));
+const pages = await Promise.all(["/", "/contact-me-server-form", "/contact-me"].map(async path => (await fetch(new URL(path, base))).text()));
 for (const page of pages) {
   assert.ok(!page.includes(record.message));
   if (process.env.BLOB_READ_WRITE_TOKEN) assert.ok(!page.includes(process.env.BLOB_READ_WRITE_TOKEN));

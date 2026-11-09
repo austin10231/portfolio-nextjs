@@ -1540,3 +1540,29 @@ a:focus-visible, button:focus-visible, [role="tab"]:focus-visible { outline: 2px
   body *, body *::before, body *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
+/* === Admin dashboard styles === */
+
+.admin-wrapper { max-width: 960px; }
+.admin-login { max-width: 360px; }
+.admin-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 1.25rem; }
+.admin-count { font-size: 0.95rem; color: #555; }
+.admin-toolbar .btn--plain { padding: 0.5em 1.1em; cursor: pointer; }
+.admin-table-wrap { overflow-x: auto; margin-top: 1rem; border: 1px solid var(--clr-border-soft); border-radius: 10px; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; }
+.admin-table th, .admin-table td { padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--clr-border-soft); vertical-align: top; }
+.admin-table th { font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; color: #555; background: var(--clr-meta-bg); white-space: nowrap; }
+.admin-table tbody tr:last-child td { border-bottom: 0; }
+.admin-table td[data-label="email"] a { color: #4f46e5; word-break: break-all; }
+.admin-table td[data-label="email"] a:hover { text-decoration: underline; }
+.admin-table .cell-message { min-width: 16rem; white-space: pre-wrap; word-break: break-word; }
+.admin-table .cell-date { white-space: nowrap; color: #777; }
+.admin-empty { margin-top: 1.25rem; font-size: 0.95rem; color: #777; }
+.dark .admin-count, .dark .admin-table th, .dark .admin-empty { color: var(--clr-fg); }
+.dark .admin-table .cell-date { color: var(--clr-fg); }
+.dark .admin-table td[data-label="email"] a { color: var(--clr-primary); }
+@media (max-width: 600px) {
+  .admin-wrapper { padding: 1.5rem 1.25rem; }
+  .admin-table { font-size: 0.85rem; }
+}
+
+

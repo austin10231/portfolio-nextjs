@@ -14,8 +14,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const { dark, language, toggleTheme, toggleLanguage } = usePreferences();
   const links = pathname === "/"
-    ? [["/about-me", "nav_about_me"], ["/experience", "nav_experience"], ["/projects", "nav_projects"], ["/#skills", "nav_skills"], ["/contact-me-server-form", "nav_contact"]]
-    : [["/", "nav_home"], ["/about-me", "nav_about_me"], ["/experience", "nav_experience"], ["/projects", "nav_projects"], ["/contact-me-server-form", "nav_contact"]];
+    ? [["/about-me", "nav_about_me"], ["/experience", "nav_experience"], ["/projects", "nav_projects"], ["/#skills", "nav_skills"], ["/contact-me", "nav_contact"]]
+    : [["/", "nav_home"], ["/about-me", "nav_about_me"], ["/experience", "nav_experience"], ["/projects", "nav_projects"], ["/contact-me", "nav_contact"]];
 
   return <header className="header center">
     <h3><Link href="/" className="link" aria-label="Mutian He home">MH.</Link></h3>
