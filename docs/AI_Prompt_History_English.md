@@ -109,6 +109,7 @@ Environment note: a stale Node process was still serving an old build on the tes
 - `/contact-me` and `/admin` were completed; all Part 1 pages, dynamic project routes and compatibility redirects still work.
 - Both contact pages save to the same private Vercel Blob JSON storage; the admin reader uses the same server-only SDK path with private access.
 - Strict type check, 19 automated tests, the production build, 82 local HTTP checks and 11 admin flow checks passed.
+- After deployment, all 82 HTTP checks and 11 admin flow checks passed again against the live site, and a labeled QA submission was saved, read back privately, denied to anonymous users (HTTP 403), and visible in the `/admin` table.
 - Changes were committed and pushed to the existing repository and redeployed to Vercel.
 
 **Website:** https://portfolio-nextjs-mu-black.vercel.app
