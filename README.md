@@ -119,7 +119,7 @@ Deploy this repository to the existing **portfolio-nextjs** Vercel project. Keep
 - [Part 1 submission checklist](docs/Assignment2_Part1_Submission_Checklist.md)
 - [Screenshots](docs/screenshots)
 
-**AI assistance:** OpenAI Codex was used for analysis, implementation, testing and documentation.
+**AI assistance:** Viber was used for analysis, implementation, testing and documentation.
 
 ## Source and licenses
 
