@@ -9,16 +9,17 @@ const inventory = await data("../docs/source-inventory.json");
 let passed = 0;
 const check = (condition, label) => { assert.ok(condition, label); passed++; console.log(`PASS ${label}`); };
 
-for (const path of ["/", "/about-me", "/projects", "/contact-me-server-form", "/contact-me", "/experience", "/contact", "/ui-design"]) {
+for (const path of ["/", "/about-me", "/projects", "/contact-me-server-form", "/contact-me", "/project-manager", "/experience", "/contact", "/ui-design"]) {
   const response = await fetch(new URL(path, base));
   check(response.status === 200, `${path} HTTP 200`);
   const html = await response.text();
   check(html.includes("<title>") && html.includes("<main") || path === "/ui-design" && html.includes("ui-grid"), `${path} page content`);
   if (path === "/projects") for (const project of projects) check(html.includes(`/projects/${project.slug}`), `project link ${project.slug}`);
-  if (["/", "/about-me", "/projects", "/contact-me-server-form", "/contact-me"].includes(path)) check(!response.redirected, `${path} is a real page`);
-  if (path === "/") check(html.includes('href="/about-me"') && html.includes('href="/contact-me"'), "required routes linked from navigation");
+  if (["/", "/about-me", "/projects", "/contact-me-server-form", "/contact-me", "/project-manager"].includes(path)) check(!response.redirected, `${path} is a real page`);
+  if (path === "/") check(html.includes('href="/about-me"') && html.includes('href="/contact-me"') && html.includes('href="/project-manager"'), "required routes linked from navigation");
   if (path === "/about-me") check(html.includes("Santa Clara University") && html.includes("University of Glasgow"), "About Me preserves original biography");
   if (path === "/contact-me-server-form" || path === "/contact-me") check(["name", "email", "message"].every(field => html.includes(`name="${field}"`)), `${path} has all three form fields`);
+  if (path === "/project-manager") check(["title", "description", "stack", "status"].every(field => html.includes(`name="${field}"`)), "project manager form has all four fields");
 }
 const adminPage = await fetch(new URL("/admin", base));
 const adminHtml = await adminPage.text();

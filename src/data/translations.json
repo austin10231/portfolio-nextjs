@@ -1,6 +1,7 @@
 {
   "en": {
     "nav_projects": "PROJECTS",
+    "nav_pm": "PROJECT MANAGER",
     "nav_skills": "SKILLS",
     "nav_contact": "CONTACT",
     "about_title_prefix": "Hi, I am ",
@@ -156,6 +157,7 @@
   },
   "zh": {
     "nav_projects": "项目",
+    "nav_pm": "项目管理",
     "nav_skills": "技能",
     "nav_contact": "联系",
     "about_title_prefix": "你好，我是",

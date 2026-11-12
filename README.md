@@ -14,6 +14,7 @@ The original `austin10231/my-profile` repository, `mutianhe.com`, DNS and deploy
 - Required pages at `/`, `/about-me`, `/projects` and `/contact-me-server-form`, plus the retained Experience page, `/contact` compatibility page and Smart Parking gallery.
 - Eight data-driven `/projects/[slug]` detail pages, generated using `generateStaticParams`; unknown slugs return 404.
 - Real Contact form with Zod server validation, durable private JSON storage in Vercel Blob, and email notification through Formspree.
+- Project Manager at `/project-manager`: add, view, edit and delete your own projects (title, description, technology stack, status) with LocalStorage persistence and form validation.
 - English/Chinese and light/dark preferences persisted in browser storage; language-aware resume downloads.
 - Original reveal, page-entry, card-tilt, magnetic-button and stardust effects with listener cleanup and reduced-motion/touch handling.
 - All original images and PDFs copied into the new project and verified against their source Git hashes. No original-domain asset dependency.
@@ -26,7 +27,8 @@ Requires **Node.js 24** and npm.
 ```sh
 npm ci
 cp .env.example .env.local
-# Configure the private Blob credential and optional email destination in .env.local.
+# Configure in .env.local: the private Blob credential, the optional email
+# destination (CONTACT_FORM_ENDPOINT) and an /admin password (ADMIN_PASSWORD).
 npm run dev
 ```
 
@@ -51,6 +53,12 @@ Missing or failed storage returns HTTP 503 and never reports success or attempts
 
 There is no public listing or download API for submissions. The owner can inspect them in Vercel Storage or with the authenticated verification script below. Anonymous requests to private Blob URLs are denied.
 
+## Project Manager (Midterm update)
+
+`/project-manager` is a browser-side CRUD page linked from the navigation. Each project has a **title** (2–80 characters), **description** (10–2,000 characters), **technology stack** (one or more comma-separated items) and **status** (Planned, In Progress or Completed). You can add, view, edit and delete projects; deleting asks for confirmation, and editing reuses the same form. The Zod schema validates every field and shows clear messages next to the offending input.
+
+**How LocalStorage works here:** LocalStorage is a small key–value store that the browser keeps on disk per site, so data survives page refreshes and browser restarts (but stays on that device and browser only; it is never sent to any server). The page reads the saved list from the key `portfolio-projects` when it loads, and writes the whole updated list back as JSON after every add, edit or delete. If the key is empty (first visit), the page shows a small starter list; if the stored JSON is unreadable, it falls back to the starter list and shows a notice instead of crashing. Reads and writes are wrapped in try/catch, so private-browsing modes that block storage only show an "unavailable" warning. On first load the list comes from LocalStorage after mount, which avoids server-rendering mismatches.
+
 ## Routes
 
 | Route | Content |
@@ -61,6 +69,9 @@ There is no public listing or download API for submissions. The owner can inspec
 | `/projects` | All eight original project cards and gallery link |
 | `/projects/[slug]` | Unique detail page with original description, stack and external links |
 | `/contact-me-server-form` | Required server-validated form with private JSON storage |
+| `/contact-me` | Contact page submitting through the `/api/contact` API |
+| `/project-manager` | LocalStorage CRUD: add, view, edit and delete your own projects |
+| `/admin` | Password-protected dashboard listing all contact submissions |
 | `/contact` | Existing contact page retained for compatibility |
 | `/ui-design` | Six original Smart Parking interface images |
 | `/api/contact` | POST-only validation, private JSON persistence and notification |
@@ -71,7 +82,7 @@ There is no public listing or download API for submissions. The owner can inspec
 src/app/          App Router pages, metadata, redirects and Contact Route Handler
 src/components/  Shared shell, localization, project cards, tabs, form and effects
 src/data/        Original bilingual text, project data and skills
-src/lib/         Server validation, private storage, delivery and project lookup
+src/lib/         Server validation, private storage, delivery, project lookup and Project Manager schema/storage
 public/          Original images/PDFs and local Font Awesome files
 tests/           Server boundary and original-content integrity tests
 scripts/         HTTP integration checks against local or deployed URLs
