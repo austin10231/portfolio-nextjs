@@ -50,3 +50,16 @@ curl -i https://YOUR_DEPLOYMENT.vercel.app/api/contact \
 - 运行 `npm test`，展示 8 个真实自动测试；展示 HTTP 检查结果。
 - 打开 `ai-development-log.md`，讲解字体接线、手机菜单层级和平滑滚动适配三项实际不足及修复。
 - 展示分阶段 Git Commit。
+
+## 6. Midterm：Project Manager（LocalStorage CRUD）
+
+- 从导航点击 PROJECT MANAGER 进入 `/project-manager`，展示与全站一致的设计。
+- 首次访问显示 3 个示例项目；打开开发者工具 Application → Local Storage，说明此时还没有 `portfolio-projects` 键（未做修改前不写入）。
+- 表单校验：空表单直接点击 Add project，展示标题、描述、技术栈的红色错误提示，且列表不变。
+- 添加：填写标题、描述、技术栈（输入 `React, Vite, Tailwind, React` 展示去重）并选择 In Progress，点击 Add project 后出现第 4 张卡片，Local Storage 中出现 `portfolio-projects` 且包含 4 条记录。
+- 刷新页面：新项目仍在，证明 LocalStorage 持久化。
+- 编辑：点击该卡片的 Edit，表单回填；修改标题并把状态改为 Completed，点击 Save changes 后卡片更新。
+- 删除：点击任意卡片的 Delete 并确认，卡片消失；再次刷新验证删除已持久化。
+- 提及容错：清空或篡改 Local Storage 数据后刷新，页面回退到示例列表并显示提示，不会白屏；隐私模式下显示"无法持久化"警告。
+- 简短展示暗色模式、中文导航（项目管理）以及窄窗口汉堡菜单进入该页面；说明其余页面功能未变。
+- 运行 `npm run typecheck`、`npm test`（24 个测试）和 `npm run check:http`（86 项检查）作为证据。

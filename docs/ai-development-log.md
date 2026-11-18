@@ -110,3 +110,15 @@ The user answered “已完成 Vercel 登录” and “允许新站复用原表�
 - Committed and pushed the implementation as `62dd572` and deployed it to the existing portfolio-nextjs Vercel project. All 75 public HTTP checks passed.
 - Re-read the pre-deployment synthetic JSON record from a separate process after redeployment, then created and retrieved a new production record. Authenticated reads returned 200, anonymous reads returned 403, and no public copies existed. Nine served client bundles and page HTML contained neither the storage credential nor the private test message.
 - Updated the final Part 1 checklist with verified results and retained accurate OpenAI Codex attribution. No original website/repository/domain changes were made.
+
+## 2026-11-11 — Midterm: Project Manager (LocalStorage CRUD)
+
+**Main user prompt:** Continue developing the existing portfolio for the Midterm Expanded Portfolio assignment: add a simple Project Manager page with add/view/edit/delete for projects (title, description, technology stack, status) saved in browser LocalStorage, with basic validation, error handling and matching responsive design; add it to the navigation; update the README (setup, new feature, how LocalStorage works); commit and push with a working build on Vercel. Keep it simple and do not rebuild the site or change existing functionality.
+
+**Implementation:** Read the existing nav, styles, tests and scripts first. Added `src/lib/project-manager.ts` (Zod schema, stack parser, storage helpers with starter-list fallback and non-throwing saves) and `/project-manager` (client CRUD page reusing the shared form/card styles, bilingual nav label, select styling, tightened 601–900px nav for six items). Updated the README (setup, feature, LocalStorage explanation) and `check-http`.
+
+**Testing:** Strict typecheck; 24/24 tests (5 new covering the schema, parser, storage fallbacks and round-trips); production build; 86/86 HTTP checks local and production; 11/11 admin flow checks; 16/16 real-browser end-to-end CRUD checks (add with validation errors first, edit, delete with confirmation, persistence across reloads via `portfolio-projects`, mobile hamburger navigation, no horizontal overflow at 390/640px).
+
+**Issues and corrections:** Three real ones, recorded in `AI_Issues_and_Fixes_English.md` — an inclusive-boundary test mistake ("ab" is a valid 2-character title), a test feeding raw comma input to the schema instead of the parsed stack, and a shared CSS rule that would have changed the Contact/Admin forms and was reverted before building.
+
+**Publication:** Committed and pushed as `e02872e` to `test-new-function`; Vercel deployed automatically; all 86 HTTP checks passed against the live site. Only additive changes; no existing functionality modified.

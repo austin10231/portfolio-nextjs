@@ -54,3 +54,29 @@ These three issues happened during the real Part 2 session (adding `/contact-me`
 - **Result:** All 19 automated tests pass (`npm test`), including cursor pagination across three pages, newest-first sorting, and unreadable-record counting.
 
 Environment note (not counted as an AI issue): a stale Node process was still serving an old build on the local test port, so one early check run saw an out-of-date page (missing `/contact-me` navigation) and a restart failed with EADDRINUSE. Stopping the stale process and restarting `next start` resolved it; all 82 HTTP checks then passed.
+
+---
+
+# Midterm Issues and Fixes
+
+These issues happened during the Midterm session (adding the LocalStorage Project Manager). Evidence is the failing command/output before the fix and the passing command after it.
+
+## 1. The validation test used an invalid "too short" example
+
+- **Identified:** The first new test expected a two-character title ("ab") to be rejected, but the schema allows 2–80 characters, so the test failed with "true !== false": the boundary value was actually valid.
+- **Fix:** The test now uses a one-character title as the too-short case, matching the real 2–80 boundary.
+- **Result:** The test passes and documents the inclusive boundary correctly. Lesson: `min()` is inclusive, so boundary examples must respect the exact limit.
+- **Evidence:** `npm test` fails before, 24/24 passes after.
+
+## 2. A test fed raw form input to the schema instead of the parsed stack
+
+- **Identified:** The first draft of the schema test passed a technology list that still contained an empty string (as a user might type "Python,,AWS") directly into the schema, so `.parse()` threw. The application never sends that shape: the page first runs `parseStack()`, which splits commas, trims entries and drops empties and duplicates.
+- **Fix:** The test now mirrors the real flow (`parseStack` first, then the schema) and separately checks that the schema still rejects blank entries for stored data.
+- **Result:** The test passes and matches the app's actual boundary. Lesson: validate at the same boundary the application uses, or the test tests an input that cannot occur.
+- **Evidence:** `npm test` fails before, 24/24 passes after.
+
+## 3. A shared style edit would have changed the existing Contact pages
+
+- **Identified:** While styling the Project Manager's status dropdown, the first CSS edit added a white background to the shared `.form-row input, .form-row select, .form-row textarea` rule. Because that rule is shared with the existing Contact and Admin forms, the change would have altered their appearance.
+- **Fix:** The background was removed before building so the new page reuses the form styles without changing any existing page. The status select inherits the same transparent background and border treatment as the other fields.
+- **Result:** The Project Manager matches the site design and the Contact/Admin pages render exactly as before. Lesson: shared CSS selectors are part of existing functionality; styling additions must be checked against every page that uses them.

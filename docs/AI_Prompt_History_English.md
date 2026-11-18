@@ -115,3 +115,50 @@ Environment note: a stale Node process was still serving an old build on the tes
 **Website:** https://portfolio-nextjs-mu-black.vercel.app
 
 **Repository:** https://github.com/austin10231/portfolio-nextjs
+
+---
+
+# Midterm: Project Manager (LocalStorage CRUD)
+
+**Course:** SCU ISBA 2438 - Midterm Expanded Portfolio
+
+**Student:** Mutian He
+
+**AI assistant:** Viber (viber-1 model)
+
+**Date of midterm work:** November 11, 2026 (America/Los_Angeles)
+
+## Goal
+
+Add a Project Manager page to the existing portfolio without rebuilding it: a simple CRUD page (add, view, edit, delete projects) with title, description, technology stack and status, saved in browser LocalStorage so changes remain after refreshing, with basic validation, error handling, matching design, a navigation link, an updated README, and successful build and Vercel deployment. Keep it simple; do not modify existing functionality.
+
+## Prompts and AI Actions
+
+### 1. Build the Midterm feature
+
+**Prompt (summary):** Continue developing the existing portfolio for the Midterm Expanded Portfolio assignment. Add a simple Project Manager page with full CRUD using browser LocalStorage; each project needs a title, description, technology stack and status; include basic validation, error handling and a clean responsive design matching the portfolio; add the page to the navigation; update the README with setup instructions, the new feature and a brief LocalStorage explanation; commit, push and keep the build working on Vercel. Keep everything simple and provide a demo script for a screen recording.
+
+**AI actions:**
+- Read the existing navigation, styles, tests, check scripts and README first.
+- Added `src/lib/project-manager.ts`: a Zod schema (title 2–80, description 10–2,000, one or more technologies, status Planned/In Progress/Completed), a comma-separated stack parser, and LocalStorage read/save helpers that fall back to a starter list when storage is empty or unreadable and report (never throw on) storage failures.
+- Added `/project-manager`, a client page with add/edit/delete forms and project cards reusing the existing design classes (form rows, buttons, wrappers), plus a status badge and responsive card grid; deleting asks for confirmation; editing reuses the same form.
+- Linked the page in the navigation with bilingual labels and tightened the 601–900px navigation sizing so six items still fit; extended the form styles to support `select`.
+- Added 5 automated tests (24 total) and extended the HTTP checks from 82 to 86; updated the README with setup steps, the new feature and a "How LocalStorage works here" section.
+- Ran the typecheck, all tests and the build; ran all HTTP and admin checks locally; drove a real browser through 16 end-to-end CRUD and persistence checks (add, edit, delete, reload persistence, mobile navigation, no overflow at 390/640px).
+- Committed and pushed `e02872e`; Vercel deployed automatically; all 86 HTTP checks then passed against the live site.
+
+### 2. Update the AI documentation for the Midterm
+
+**Prompt (summary):** Update the existing AI development documentation with the Midterm assignment: actual prompts, implementation summary, testing results and challenges; update the demo checklist accordingly; keep everything concise and accurate; push the changes; do not modify any existing functionality.
+
+**AI actions:** Appended this Midterm section and the Midterm issues to the existing English documentation files, added a Midterm section to the demo checklist, and pushed the documentation-only commit without touching any website code or deployment.
+
+## Verification and Final Result (Midterm)
+
+- `/project-manager` is live and linked in the navigation; all existing pages, dynamic project routes, contact storage and the admin dashboard still work.
+- Strict type check, 24 automated tests, the production build, 86 HTTP checks (local and production), 11 admin flow checks and 16 browser end-to-end CRUD checks passed.
+- Implemented in commit `e02872e`; the documentation updates are documentation-only.
+
+**Website:** https://portfolio-nextjs-mu-black.vercel.app/project-manager
+
+**Repository:** https://github.com/austin10231/portfolio-nextjs
