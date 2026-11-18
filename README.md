@@ -15,6 +15,8 @@ The original `austin10231/my-profile` repository, `mutianhe.com`, DNS and deploy
 - Eight data-driven `/projects/[slug]` detail pages, generated using `generateStaticParams`; unknown slugs return 404.
 - Real Contact form with Zod server validation, durable private JSON storage in Vercel Blob, and email notification through Formspree.
 - Project Manager at `/project-manager`: add, view, edit and delete your own projects (title, description, technology stack, status) with LocalStorage persistence and form validation.
+- Task Tracker at `/task-tracker`: a second LocalStorage CRUD feature (add, check off, edit, delete simple tasks) stored under the `portfolio-tasks` key.
+- Notes at `/notes` with `/api/notes`: full server-side JSON CRUD (GET, POST, PUT, PATCH, DELETE) with Zod validation, 201/200/400/404/405 responses, private Vercel Blob persistence and a server log line for every operation. The page itself is a parent component that fetches on the server and passes the notes to child components through props.
 - English/Chinese and light/dark preferences persisted in browser storage; language-aware resume downloads.
 - Original reveal, page-entry, card-tilt, magnetic-button and stardust effects with listener cleanup and reduced-motion/touch handling.
 - All original images and PDFs copied into the new project and verified against their source Git hashes. No original-domain asset dependency.
@@ -59,6 +61,25 @@ There is no public listing or download API for submissions. The owner can inspec
 
 **How LocalStorage works here:** LocalStorage is a small key–value store that the browser keeps on disk per site, so data survives page refreshes and browser restarts (but stays on that device and browser only; it is never sent to any server). The page reads the saved list from the key `portfolio-projects` when it loads, and writes the whole updated list back as JSON after every add, edit or delete. If the key is empty (first visit), the page shows a small starter list; if the stored JSON is unreadable, it falls back to the starter list and shows a notice instead of crashing. Reads and writes are wrapped in try/catch, so private-browsing modes that block storage only show an "unavailable" warning. On first load the list comes from LocalStorage after mount, which avoids server-rendering mismatches.
 
+## Task Tracker (LocalStorage, midterm update)
+
+`/task-tracker` is a second, deliberately simple LocalStorage feature (kept separate from Projects, Blogs and the theme/language toggles). Each task has a **title** (1–120 characters) and a **done** checkbox. You can add a task, check or uncheck it, edit its title through the same form, and delete it with confirmation. It persists under the LocalStorage key `portfolio-tasks` using the same read/fallback/write approach described above: starter tasks on first visit, graceful recovery from unreadable data, and an "unavailable" warning when storage is blocked. Changes remain after refreshing the page.
+
+## Notes API (server-side JSON, midterm update)
+
+`/notes` is backed by a real backend JSON API stored as one private JSON document in Vercel Blob (separate from contact submissions). A note is **text** (1–500 characters) plus server-managed `id`, `createdAt` and `updatedAt`. Every operation is validated with Zod and returns proper status codes; every operation writes a server log line like `[notes-api] POST /api/notes -> 201 (634ms)` that is visible in the `next start` terminal locally and in Vercel → Logs in production, which makes the API easy to demonstrate on video.
+
+| Method and path | Success | Error responses |
+| --- | --- | --- |
+| `GET /api/notes` | 200 list | 503 storage unavailable |
+| `POST /api/notes` | **201 Created** + `Location` header | 400 invalid JSON/validation, 405, 413, 503 |
+| `GET /api/notes/[id]` | 200 note | 404 not found, 503 |
+| `PUT /api/notes/[id]` | 200 updated | 400, 404, 405, 413, 503 |
+| `PATCH /api/notes/[id]` | 200 updated | 400, 404, 405, 413, 503 |
+| `DELETE /api/notes/[id]` | 200 deleted | 404, 405, 503 |
+
+**React props example:** `/notes/page.tsx` is a server component (the parent). It fetches the notes on the server and passes them to the `NotesBoard` client component through props; `NotesBoard` passes each note and its edit/delete callbacks down to the `NoteItem` child through props. Submitting the form calls the API and refreshes the server-rendered list.
+
 ## Routes
 
 | Route | Content |
@@ -71,10 +92,14 @@ There is no public listing or download API for submissions. The owner can inspec
 | `/contact-me-server-form` | Required server-validated form with private JSON storage |
 | `/contact-me` | Contact page submitting through the `/api/contact` API |
 | `/project-manager` | LocalStorage CRUD: add, view, edit and delete your own projects |
+| `/task-tracker` | LocalStorage CRUD: add, check off, edit and delete simple tasks |
+| `/notes` | Server-side JSON notes; parent component fetches and passes data to children via props |
 | `/admin` | Password-protected dashboard listing all contact submissions |
 | `/contact` | Existing contact page retained for compatibility |
 | `/ui-design` | Six original Smart Parking interface images |
 | `/api/contact` | POST-only validation, private JSON persistence and notification |
+| `/api/notes` | GET list, POST create (201) for the server-side JSON notes |
+| `/api/notes/[id]` | GET one, PUT/PATCH update, DELETE for the server-side JSON notes |
 
 ## Structure
 
@@ -82,7 +107,7 @@ There is no public listing or download API for submissions. The owner can inspec
 src/app/          App Router pages, metadata, redirects and Contact Route Handler
 src/components/  Shared shell, localization, project cards, tabs, form and effects
 src/data/        Original bilingual text, project data and skills
-src/lib/         Server validation, private storage, delivery, project lookup and Project Manager schema/storage
+src/lib/         Server validation, private storage, delivery, project lookup and the Project Manager/Task Tracker/Notes schemas and storage
 public/          Original images/PDFs and local Font Awesome files
 tests/           Server boundary and original-content integrity tests
 scripts/         HTTP integration checks against local or deployed URLs
@@ -127,6 +152,7 @@ Deploy this repository to the existing **portfolio-nextjs** Vercel project. Keep
 - [Technical and design decisions](docs/decisions.md)
 - [Verification report](docs/verification.md)
 - [Video demonstration checklist](docs/demo-checklist.md)
+- [Midterm rubric compliance checklist](docs/midterm-rubric-checklist.md)
 - [Part 1 submission checklist](docs/Assignment2_Part1_Submission_Checklist.md)
 - [Screenshots](docs/screenshots)
 

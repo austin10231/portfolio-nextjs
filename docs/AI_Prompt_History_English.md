@@ -153,6 +153,19 @@ Add a Project Manager page to the existing portfolio without rebuilding it: a si
 
 **AI actions:** Appended this Midterm section and the Midterm issues to the existing English documentation files, added a Midterm section to the demo checklist, and pushed the documentation-only commit without touching any website code or deployment.
 
+### 3. Close the remaining rubric gaps (Task Tracker and Notes API)
+
+**Prompt (summary):** Review the Canvas Midterm rubric; Codex found gaps: the LocalStorage requirement excludes Projects/Blogs/toggles, there is no backend JSON CRUD feature, 201 Created was missing, server logs were needed for the demo, and a clear parent-fetches-to-child-props example was required. Implement everything for real (not just documentation), keep all existing pages working, use the simplest implementation, test everything (API CRUD, LocalStorage persistence, production), update the README and assignment documentation, commit and push, deploy to Vercel, provide a requirement checklist and demo steps, but no video script yet.
+
+**AI actions:**
+- Added **Task Tracker** at `/task-tracker` (`src/lib/task-tracker.ts` + client page): full CRUD over simple tasks in LocalStorage key `portfolio-tasks`, validation, starter data, graceful fallbacks — a second LocalStorage feature unrelated to Projects/Blogs/toggles.
+- Added **Notes API**: `src/lib/notes.ts` (one `processNotesRequest` handling GET/POST/PUT/PATCH/DELETE with Zod validation, 201/200/400/404/405/413/503 responses and a `[notes-api]` server log line per operation), `src/lib/notes-storage.ts` (private Vercel Blob JSON at `notes/notes-store.json`, separate from contact submissions), route handlers at `/api/notes` and `/api/notes/[id]` (Next 16 async `params`).
+- Added **Notes page** at `/notes`: a server-component parent fetches the notes and passes them via props to the `NotesBoard` client child, which passes each note and callbacks via props to `NoteItem` — the required parent-to-children props example.
+- Wired both pages into the navigation (bilingual labels) and let the desktop/tablet nav wrap to a second row so eight items never overflow horizontally.
+- Added 15 tests (39 total) and extended the HTTP checks from 86 to 110, including a complete self-cleaning API CRUD lifecycle check (201, 200, 400, 404, 405) safe to run against production.
+- Updated the README (features, routes, Task Tracker and Notes API sections) and added `docs/midterm-rubric-checklist.md` mapping every rubric item to its implementation and verification.
+- Verified locally (typecheck, 39/39 tests, build, 110/110 HTTP checks, 11/11 admin checks, 26/26 browser e2e checks) and pushed; the production deployment then passed the same 110-check HTTP suite.
+
 ## Verification and Final Result (Midterm)
 
 - `/project-manager` is live and linked in the navigation; all existing pages, dynamic project routes, contact storage and the admin dashboard still work.
@@ -162,3 +175,9 @@ Add a Project Manager page to the existing portfolio without rebuilding it: a si
 **Website:** https://portfolio-nextjs-mu-black.vercel.app/project-manager
 
 **Repository:** https://github.com/austin10231/portfolio-nextjs
+
+## Verification and Final Result (Midterm rubric closure)
+
+- `/task-tracker` and `/notes` are live and linked in the navigation; the Notes API performs full CRUD against private server-side JSON storage; every operation is logged.
+- Strict type check, 39/39 automated tests, production build, 110/110 HTTP checks (local and, after deploy, production), 11/11 admin flow checks and 26/26 browser end-to-end checks (Task Tracker CRUD/persistence, Notes CRUD through the UI, navigation, no horizontal overflow at 390–1280px) passed.
+- `docs/midterm-rubric-checklist.md` maps each rubric requirement to its implementation and verification.

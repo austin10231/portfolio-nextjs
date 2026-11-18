@@ -122,3 +122,15 @@ The user answered “已完成 Vercel 登录” and “允许新站复用原表�
 **Issues and corrections:** Three real ones, recorded in `AI_Issues_and_Fixes_English.md` — an inclusive-boundary test mistake ("ab" is a valid 2-character title), a test feeding raw comma input to the schema instead of the parsed stack, and a shared CSS rule that would have changed the Contact/Admin forms and was reverted before building.
 
 **Publication:** Committed and pushed as `e02872e` to `test-new-function`; Vercel deployed automatically; all 86 HTTP checks passed against the live site. Only additive changes; no existing functionality modified.
+
+## 2026-11-17 — Midterm rubric closure: Task Tracker and Notes API
+
+**Main user prompt:** A rubric review (Codex) found gaps: the LocalStorage requirement excludes Projects/Blogs/toggles; there was no backend JSON CRUD feature; no 201 Created; no server logs for the demo; and no clear parent-fetches-to-child-props example. Implement everything for real, keep existing pages working, use the simplest implementation, test everything (API CRUD, LocalStorage persistence, production), update the README and assignment documentation, commit and push, deploy to Vercel, provide a rubric checklist and demo steps — but no video script yet.
+
+**Implementation:** Added `src/lib/task-tracker.ts` + `/task-tracker` (LocalStorage CRUD under `portfolio-tasks`: add, check off, edit, delete, with starter data and fallbacks). Added the Notes backend: `src/lib/notes.ts` (one request processor for GET/POST/PUT/PATCH/DELETE with Zod validation, 201/200/400/404/405/413/503 codes and a `[notes-api]` log line per operation), `src/lib/notes-storage.ts` (private Blob JSON at `notes/notes-store.json`), handlers at `/api/notes` and `/api/notes/[id]` (Next 16 async params), and `/notes` where a server-component parent fetches the notes and passes them via props to `NotesBoard` → `NoteItem`. Wired both pages into the nav (bilingual, wrapping desktop/tablet list) and extended the CSS.
+
+**Testing:** 39/39 tests (15 new: task schema/storage fallbacks; API create/read/update/delete, validation, 404/405/503); build; 110/110 HTTP checks locally including a self-cleaning full CRUD lifecycle (201 + Location, 200s, 400s, 404s, 405, no-store); 11/11 admin checks; 26/26 browser e2e checks (task CRUD + refresh persistence, notes CRUD through the UI against real storage, nav links, no horizontal overflow at 390/601/640/768/900/1280px, mobile hamburger). Server logs verified in the local terminal.
+
+**Issues and corrections:** Four real ones, recorded in `AI_Issues_and_Fixes_English.md` — extensionless test imports that Node could not resolve, a same-millisecond `updatedAt` assertion, a Blob `get()` adapter that ignored null/304 shapes (caught by the strict typecheck), and an e2e assertion racing a fetch round-trip.
+
+**Publication:** Pushed to `test-new-function` (Vercel auto-deploy); production passed the same 110-check HTTP suite. `docs/midterm-rubric-checklist.md` maps every rubric requirement to its implementation and verification.

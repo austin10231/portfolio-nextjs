@@ -396,6 +396,8 @@ main {
 .nav__list {
   margin-right: 1.5em;
   display: flex;
+  flex-wrap: wrap;
+  row-gap: 0.3em;
 }
 
 .nav__list-item {
@@ -1499,7 +1501,7 @@ main {
 .project__detail-link:focus-visible { color: var(--clr-primary); }
 .header { z-index: 10; }
 @media (min-width: 601px) and (max-width: 900px) {
-  .nav__list { font-size: 0.8rem; margin-right: 0.8em; }
+  .nav__list { font-size: 0.8rem; margin-right: 0.8em; flex-wrap: wrap; row-gap: 0.35em; padding: 0.35em 0; }
   .nav__list-item { margin-left: 0.8em; }
 }
 .gallery-link { margin-top: 2rem; text-align: center; }
@@ -1593,6 +1595,28 @@ a:focus-visible, button:focus-visible, [role="tab"]:focus-visible { outline: 2px
 .dark .pm-status--in-progress { color: #9cc4e8; border-color: #9cc4e8; }
 .dark .pm-status--completed { color: #a0e6b6; border-color: #a0e6b6; }
 .dark .pm-delete { color: #ffb4b4; border-color: rgba(255, 180, 180, 0.45); }
+
+/* === Task Tracker styles === */
+
+.tasks-list { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.75rem; text-align: left; }
+.task-item { display: flex; align-items: center; gap: 0.85rem; padding: 0.8rem 1rem; border: 1px solid var(--clr-border-soft); border-radius: 10px; background: var(--clr-meta-bg); }
+.task-check { width: 1.15rem; height: 1.15rem; flex-shrink: 0; accent-color: var(--clr-primary); cursor: pointer; }
+.task-item__title { flex: 1; margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--clr-fg-alt); overflow-wrap: anywhere; }
+.task-item--done .task-item__title { text-decoration: line-through; opacity: 0.55; }
+.task-item__actions { display: flex; gap: 0.35rem; flex-shrink: 0; }
+.task-item__actions .btn { padding: 0.4em 0.8em; font-size: 0.78rem; cursor: pointer; }
+.dark .task-item__title { color: var(--clr-fg); }
+
+/* === Notes (server-side JSON) styles === */
+
+.notes-board { text-align: left; }
+.notes-list { display: grid; gap: 0.9rem; margin-top: 1rem; }
+.note-card { display: flex; flex-direction: column; gap: 0.5rem; border: 1px solid var(--clr-border-soft); border-radius: 12px; padding: 1rem 1.2rem; background: var(--clr-meta-bg); }
+.note-card__text { margin: 0; font-size: 0.95rem; line-height: 1.55; color: var(--clr-fg-alt); white-space: pre-wrap; word-break: break-word; }
+.note-card__meta { margin: 0; font-size: 0.78rem; color: #777; }
+.note-card .btn { cursor: pointer; }
+.dark .note-card__text { color: var(--clr-fg); }
+.dark .note-card__meta { color: var(--clr-fg); }
 
 
 

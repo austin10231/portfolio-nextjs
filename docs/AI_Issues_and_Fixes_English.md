@@ -80,3 +80,37 @@ These issues happened during the Midterm session (adding the LocalStorage Projec
 - **Identified:** While styling the Project Manager's status dropdown, the first CSS edit added a white background to the shared `.form-row input, .form-row select, .form-row textarea` rule. Because that rule is shared with the existing Contact and Admin forms, the change would have altered their appearance.
 - **Fix:** The background was removed before building so the new page reuses the form styles without changing any existing page. The status select inherits the same transparent background and border treatment as the other fields.
 - **Result:** The Project Manager matches the site design and the Contact/Admin pages render exactly as before. Lesson: shared CSS selectors are part of existing functionality; styling additions must be checked against every page that uses them.
+
+---
+
+# Midterm Rubric Closure: Issues and Fixes
+
+These issues happened while adding the Task Tracker (LocalStorage) and the Notes backend JSON API. Evidence is the failing command/output before the fix and the passing command after it.
+
+## 1. The new tests used extensionless imports and Node could not resolve them
+
+- **Identified:** The first draft of `tests/task-tracker.test.ts` imported `"../src/lib/task-tracker"` without a file extension, so the test runner (Node's TypeScript stripping) failed to load the file with `ERR_MODULE_NOT_FOUND`. The project's test setup compiles nothing; it runs the TypeScript sources directly, which requires real file paths.
+- **Fix:** The imports use the explicit `.ts` extension, matching the existing test files.
+- **Result:** All tests load and pass. Lesson: follow the project's existing test conventions before writing new tests.
+- **Evidence:** `npm test` fails to load the file before; 39/39 tests pass after.
+
+## 2. An updatedAt assertion failed because two writes happened in the same millisecond
+
+- **Identified:** The PUT test asserted `updatedAt` differs from `createdAt`, but ISO timestamps only have millisecond resolution and the test's POST and PUT ran within the same millisecond, so the strings were equal and the test failed intermittently-by-design.
+- **Fix:** The test waits 5ms before updating (realistic: updates happen after creation), keeping the production timestamp logic unchanged.
+- **Result:** The test passes reliably and still proves the server re-stamps `updatedAt` on updates.
+- **Evidence:** `npm test` fails before; 39/39 passes after.
+
+## 3. The Blob read adapter assumed `get()` always returns a stream
+
+- **Identified:** The strict type check rejected the Notes storage adapter: `@vercel/blob`'s `get()` can also return `null` and a 304-style result whose `stream` is `null`, which did not match the adapter's assumed shape.
+- **Fix:** The adapter treats `null`, unexpected statuses and missing streams as "empty store" and relies on the SDK's `BlobNotFoundError` for a first-run empty store; only genuine errors surface as HTTP 503.
+- **Result:** Type check passes and the API returns an empty list on first use instead of erroring.
+- **Evidence:** `npm run typecheck` fails before; passes after, and the first production GET returns 200 with an empty list.
+
+## 4. A browser check asserted a server response before it arrived
+
+- **Identified:** The end-to-end check clicked "Add note" on an empty form and immediately counted the validation errors. The assertion ran before the fetch round-trip finished, so it failed even though the UI worked.
+- **Fix:** The check waits for the error element to appear before counting, like the network-dependent checks already do.
+- **Result:** All 26 end-to-end checks pass.
+- **Evidence:** `midterm-e2e.mjs` fails before; 26/26 passes after.

@@ -83,3 +83,18 @@ Date: 2026-11-07 (America/Los_Angeles). Implementation commit: `62dd572`.
 - AI tool attribution is OpenAI Codex. Original `my-profile` head was checked and remains `3ef6c8264a0efb6a8e42f752a34b3e2e4caf56db`; this review did not write to that repository, its domain or deployment.
 - Production browser checks opened both Maze Navigation and Multimodal Image Search detail pages, refreshed a detail route, submitted invalid form input at the required contact URL, and used the mobile About Me menu link successfully.
 - Current production screenshots: `screenshots/part1/about-me-desktop.jpg`, `screenshots/part1/server-form-validation.jpg`, and `screenshots/part1/mobile-navigation.jpg`.
+
+## Midterm rubric closure (November 17–18, 2026)
+
+Scope: Task Tracker (LocalStorage) and the Notes backend JSON API added for the midterm rubric; all prior features untouched. Details in `midterm-rubric-checklist.md`.
+
+| Check | Result |
+| --- | --- |
+| Strict type check and production build | Passed (all new routes compiled: `/task-tracker`, `/notes`, `/api/notes`, `/api/notes/[id]`) |
+| Automated tests | 39/39 passed (15 new: task schema/storage, notes API CRUD, validation, 404/405/503) |
+| HTTP checks (local, port 3100) | 110/110 passed, including the full Notes CRUD lifecycle: POST 201 + Location, GET 200, PUT/PATCH 200, DELETE 200, 400 invalid JSON/blank/oversized text, 404 unknown id (GET/PUT/DELETE), 405 wrong method, `Cache-Control: no-store` |
+| Admin flow checks (local) | 11/11 passed |
+| Browser end-to-end (local) | 26/26 passed: task tracker starter list, validation, add/toggle/edit/delete, LocalStorage persistence across refreshes; notes add/edit/delete through the UI against real storage with the parent-rendered list updating; nav links; no horizontal overflow at 390/601/640/768/900/1280px; mobile hamburger navigation |
+| Server logs | Local `next start` terminal captured the full lifecycle, e.g. `[notes-api] POST /api/notes -> 201 (634ms)`, `created note <id> (1 total)`, `[notes-api] DELETE /api/notes/<id> -> 200 (343ms)` |
+| HTTP checks (production) | 110/110 passed against https://portfolio-nextjs-mu-black.vercel.app after deployment; the QA note created by the check was deleted by the same check, leaving the store clean |
+| Existing features | All prior routes, contact storage, admin flow and Part 1 checks still pass unchanged |

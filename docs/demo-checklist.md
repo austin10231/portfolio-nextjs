@@ -62,4 +62,16 @@ curl -i https://YOUR_DEPLOYMENT.vercel.app/api/contact \
 - 删除：点击任意卡片的 Delete 并确认，卡片消失；再次刷新验证删除已持久化。
 - 提及容错：清空或篡改 Local Storage 数据后刷新，页面回退到示例列表并显示提示，不会白屏；隐私模式下显示"无法持久化"警告。
 - 简短展示暗色模式、中文导航（项目管理）以及窄窗口汉堡菜单进入该页面；说明其余页面功能未变。
-- 运行 `npm run typecheck`、`npm test`（24 个测试）和 `npm run check:http`（86 项检查）作为证据。
+- 运行 `npm run typecheck`、`npm test` 和 `npm run check:http` 作为证据（当前总数见第 7 节）。
+
+## 7. Midterm 补充：Task Tracker 与 Notes API
+
+- 从导航点击 TASKS 进入 `/task-tracker`：显示 3 个初始任务；打开开发者工具 Application → Local Storage，说明未修改前没有 `portfolio-tasks` 键。
+- 空表单点击 Add task 展示校验错误；添加一个任务后列表变为 4 项，Local Storage 出现 `portfolio-tasks`；刷新页面证明数据仍在（LocalStorage 持久化）。
+- 勾选完成（划线效果）、Edit 修改标题、Delete 确认删除，再刷新验证删除已持久化。
+- 从导航点击 NOTES 进入 `/notes`：说明这是父组件（服务器端获取数据）通过 props 传给子组件（打开 `src/app/notes/page.tsx` 和 `src/components/notes-board.tsx` 各几秒）。
+- 空表单提交展示校验错误；添加一条笔记，列表刷新显示（数据已存到服务器端 JSON）；刷新页面数据仍在（与 LocalStorage 不同：换浏览器/设备也在）。
+- 编辑并保存（PUT）、删除（DELETE）一条笔记，列表随之更新。
+- 展示服务器日志：本地在 `npm start` 终端滚动查看 `[notes-api] POST /api/notes -> 201 (…ms)` 等日志行；线上在 Vercel → 项目 → Logs 查看。这是后端可验证性的直接证据。
+- 简要说明状态码约定：创建 201 Created（响应含 Location 头）、读取/更新/删除 200、无效输入 400、不存在的 id 404、错误方法 405（可指向 `docs/midterm-rubric-checklist.md` 的对照表）。
+- 收尾：导航依次经过 TASKS/NOTES/PROJECT MANAGER，说明 8 个导航项在窄屏自动换行且无横向溢出；运行 `npm test`（39 个测试）与 `npm run check:http`（110 项检查）作为证据。
